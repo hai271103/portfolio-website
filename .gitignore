@@ -1,0 +1,46 @@
+####################################
+# ===== ASP.NET Core / Visual Studio
+####################################
+
+# Build output
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+####################################
+# ===== ASP.NET Core config
+####################################
+
+# Development config (tránh lộ thông tin)
+appsettings.Development.json
+
+####################################
+# ===== Frontend (HTML/CSS/JS)
+####################################
+
+# Node (nếu sau này dùng)
+node_modules/
+
+####################################
+# ===== OS / System files
+####################################
+
+.DS_Store
+Thumbs.db
+
+####################################
+# ===== Logs / temp
+####################################
+
+*.log
+*.tmp
