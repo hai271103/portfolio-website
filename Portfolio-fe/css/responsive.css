@@ -1,0 +1,41 @@
+/* ===========================
+   RESPONSIVE DESIGN
+   =========================== */
+
+/* Tablet & Small Desktop (768px - 992px) */
+@media (max-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+/* Tablet (576px - 768px) */
+@media (max-width: 768px) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.75rem; }
+  
+  .section {
+    padding: 3rem 0;
+  }
+}
+
+/* Mobile (< 576px) */
+@media (max-width: 576px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .section {
+    padding: 2rem 0;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 0.875rem;
+  }
+}

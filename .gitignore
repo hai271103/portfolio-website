@@ -21,8 +21,18 @@
 # ===== ASP.NET Core config
 ####################################
 
-# Development config (tránh lộ thông tin)
+# Development config (tránh lộ thông tin - có password)
 appsettings.Development.json
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+
+# Entity Framework Migrations (optional: có thể commit)
+# **/Migrations/
 
 ####################################
 # ===== Frontend (HTML/CSS/JS)
