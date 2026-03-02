@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Test - Portfolio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #f5f5f5;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .skill-card {
+      display: inline-block;
+      padding: 10px 15px;
+      margin: 5px;
+      background: #3b82f6;
+      color: white;
+      border-radius: 4px;
+    }
+    .project-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+    .error {
+      color: red;
+      background: #fee;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    .success {
+      color: green;
+      background: #efe;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Simple Test - Portfolio Data</h1>
+  
+  <div id="status" class="section">
+    <h3>⏳ Loading data...</h3>
+  </div>
+  
+  <div id="skills" class="section">
+    <h2>Skills</h2>
+    <div id="skills-content"></div>
+  </div>
+  
+  <div id="projects" class="section">
+    <h2>Projects</h2>
+    <div id="projects-content"></div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5099/api';
+
+    async function loadData() {
+      const statusDiv = document.getElementById('status');
+      
+      try {
+        // Load skills
+        console.log('Fetching skills...');
+        const skillsResponse = await fetch(`${API_BASE_URL}/skills`);
+        const skills = await skillsResponse.json();
+        console.log('Skills loaded:', skills);
+        
+        const skillsContent = document.getElementById('skills-content');
+        if (skills && skills.length > 0) {
+          skillsContent.innerHTML = skills.map(skill => `
+            <span class="skill-card">${skill.name} (${skill.hours}h)</span>
+          `).join('');
+          statusDiv.innerHTML = '<p class="success">✅ Skills loaded: ' + skills.length + ' items</p>';
+        } else {
+          skillsContent.innerHTML = '<p class="error">No skills found</p>';
+        }
+        
+        // Load projects
+        console.log('Fetching projects...');
+        const projectsResponse = await fetch(`${API_BASE_URL}/projects`);
+        const projects = await projectsResponse.json();
+        console.log('Projects loaded:', projects);
+        
+        const projectsContent = document.getElementById('projects-content');
+        if (projects && projects.length > 0) {
+          projectsContent.innerHTML = projects.map(project => `
+            <div class="project-card">
+              <h3>${project.title}</h3>
+              <p><strong>Role:</strong> ${project.role}</p>
+              <p>${project.description}</p>
+              <p><strong>Technologies:</strong> ${project.technologies}</p>
+            </div>
+          `).join('');
+          statusDiv.innerHTML += '<p class="success">✅ Projects loaded: ' + projects.length + ' items</p>';
+        } else {
+          projectsContent.innerHTML = '<p class="error">No projects found</p>';
+        }
+        
+      } catch (error) {
+        console.error('Error:', error);
+        statusDiv.innerHTML = '<p class="error">❌ Error: ' + error.message + '</p>';
+      }
+    }
+
+    // Load data when page loads
+    loadData();
+  </script>
+</body>
+</html>

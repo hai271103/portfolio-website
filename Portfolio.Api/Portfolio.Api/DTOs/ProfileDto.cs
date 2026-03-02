@@ -1,0 +1,32 @@
+namespace Portfolio.Api.DTOs;
+
+public class ProfileDto
+{
+    public int Id { get; set; }
+    public string FullName { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Bio { get; set; } = string.Empty;
+    public string? AvatarUrl { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string? Phone { get; set; }
+    public string? Location { get; set; }
+    public string? GitHubUrl { get; set; }
+    public string? LinkedInUrl { get; set; }
+    public string? FacebookUrl { get; set; }
+    public string? CVUrl { get; set; }
+}
+
+public class ProfileUpdateDto
+{
+    public string FullName { get; set; } = string.Empty;
+    public string Title { get; set; } = string.Empty;
+    public string Bio { get; set; } = string.Empty;
+    public string? AvatarUrl { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string? Phone { get; set; }
+    public string? Location { get; set; }
+    public string? GitHubUrl { get; set; }
+    public string? LinkedInUrl { get; set; }
+    public string? FacebookUrl { get; set; }
+    public string? CVUrl { get; set; }
+}

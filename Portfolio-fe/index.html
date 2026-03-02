@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Nguyen Trong Hai - Full Stack Developer">
+  <meta name="keywords" content="portfolio, full stack developer, web developer, C#, ASP.NET Core, React">
+  <meta name="author" content="Nguyen Trong Hai">
+  
+  <title>Nguyen Trong Hai - Full Stack Developer</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <a href="#hero">
+          <span class="logo-initial">H</span>
+          <span class="logo-text">Hai Dev</span>
+        </a>
+      </div>
+      
+      <ul class="nav-menu">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button id="theme-toggle" class="btn-icon" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button id="mobile-menu-toggle" class="btn-icon mobile-only" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <p class="hero-greeting">Hello, I'm</p>
+          <h1 class="hero-name"><span class="name">Nguyen Trong Hai</span></h1>
+          <h2 class="hero-title"><span class="title">Fullstack Developer</span></h2>
+          <p class="hero-bio bio">
+            A passionate developer with a strong interest in technology, logical problem-solving, 
+            and creating efficient web solutions.
+          </p>
+          
+          <div class="tech-badges" id="tech-badges">
+            <!-- Tech badges will be rendered here by JS from top skills -->
+          </div>
+          
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">
+              <i class="fas fa-briefcase"></i> View Projects
+            </a>
+            <a href="#contact" class="btn btn-outline">
+              <i class="fas fa-envelope"></i> Contact Me
+            </a>
+          </div>
+          
+          <div class="social-links-hero">
+            <!-- Social links will be rendered here by JS -->
+          </div>
+        </div>
+        
+        <div class="hero-image">
+          <div class="avatar-container">
+            <img src="images/avatar/avatar.jpg" alt="Nguyen Trong Hai" class="avatar" 
+                 onerror="this.src='https://ui-avatars.com/api/?name=Nguyen+Trong+Hai&size=300&background=667eea&color=fff&bold=true'">
+            <div class="status-badge">
+              <span class="badge-icon">💼</span>
+              <div class="badge-text">
+                <div class="badge-label">Full Stack</div>
+                <div class="badge-sublabel">Developer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="skills-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">My Skills</h2>
+        <p class="section-subtitle">
+          I specialize in creating clean, efficient, and user-friendly web experiences 
+          with a focus on modern technologies.
+        </p>
+      </div>
+      
+      <div class="skills-container">
+        <!-- Skills will be rendered here by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="projects-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">My Projects</h2>
+        <p class="section-subtitle">
+          A selection of real-world projects I've built during my studies and work.
+        </p>
+      </div>
+      
+      <div class="projects-grid">
+        <!-- Projects will be rendered here by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Column 1: Quick Links -->
+        <div class="footer-column">
+          <h3 class="footer-heading">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 2: Contact Info -->
+        <div class="footer-column" id="contact">
+          <h3 class="footer-heading">Contact Info</h3>
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <div class="contact-details">
+                <div class="contact-label">Email Me</div>
+                <a href="mailto:contact@email.com" class="contact-email">Loading...</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="contact-details">
+                <div class="contact-label">Location</div>
+                <span class="contact-location">Loading...</span>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <div class="contact-details">
+                <div class="contact-label">Call Me</div>
+                <a href="tel:+84" class="contact-phone">Loading...</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Column 3: Let's Talk -->
+        <div class="footer-column">
+          <h3 class="footer-heading">Let's Talk</h3>
+          <p class="footer-description">
+            Schedule a quick meeting to discuss your project or opportunities for collaboration.
+          </p>
+          <a href="#contact" class="btn btn-primary btn-small">
+            <i class="fas fa-calendar"></i> Schedule a Meeting
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="footer-text">
+          <p>&copy; 2026 Nguyen Trong Hai. All rights reserved.</p>
+          <p class="footer-made">Made with <i class="fas fa-heart"></i> using <i class="fab fa-js"></i> JavaScript</p>
+        </div>
+        
+        <div class="social-links footer-social">
+          <!-- Social links will be rendered here by JS -->
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="btn-icon back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

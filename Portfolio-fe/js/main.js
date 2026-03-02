@@ -40,6 +40,8 @@ async function loadAllData() {
   showLoadingState();
   
   try {
+    console.log('🔄 Starting to load all data...');
+    
     // Load all data in parallel
     const [profileResult, skillsResult, projectsResult, socialLinksResult] = await Promise.all([
       API.profile.get(),
@@ -48,26 +50,35 @@ async function loadAllData() {
       API.socialLinks.getActive(),
     ]);
 
-    // Update state
-    if (profileResult.success) {
-      AppState.profile = profileResult.data;
-      renderProfile();
-    } else {
-      console.warn('Failed to load profile:', profileResult.error);
-      // Load default/fallback data
-      loadFallbackProfile();
-    }
+    console.log('📊 API Results:', {
+      profile: profileResult,
+      skills: skillsResult,
+      projects: projectsResult,
+      socialLinks: socialLinksResult
+    });
 
+    // Update state - Load skills first as tech badges depend on them
     if (skillsResult.success) {
       AppState.skills = skillsResult.data;
+      console.log('✅ Skills loaded:', skillsResult.data.length, 'items');
       renderSkills();
     } else {
       console.warn('Failed to load skills:', skillsResult.error);
       loadFallbackSkills();
     }
 
+    if (profileResult.success) {
+      AppState.profile = profileResult.data;
+      renderProfile(); // This will also render tech badges
+    } else {
+      console.warn('Failed to load profile:', profileResult.error);
+      // Load default/fallback data
+      loadFallbackProfile();
+    }
+
     if (projectsResult.success) {
       AppState.projects = projectsResult.data;
+      console.log('✅ Projects loaded:', projectsResult.data.length, 'items');
       renderProjects();
     } else {
       console.warn('Failed to load projects:', projectsResult.error);
@@ -95,22 +106,61 @@ function renderProfile() {
   if (!profile) return;
 
   // Update hero section
-  document.querySelector('#hero .name')?.textContent = profile.fullName;
-  document.querySelector('#hero .title')?.textContent = profile.title;
-  document.querySelector('#hero .bio')?.textContent = profile.bio;
-  document.querySelector('#hero .avatar')?.setAttribute('src', profile.avatarUrl);
+  const nameEl = document.querySelector('#hero .name');
+  if (nameEl) nameEl.textContent = profile.fullName;
   
-  // Update contact info
-  document.querySelector('.contact-email')?.textContent = profile.email;
-  document.querySelector('.contact-phone')?.textContent = profile.phone;
-  document.querySelector('.contact-location')?.textContent = profile.location;
+  const titleEl = document.querySelector('#hero .title');
+  if (titleEl) titleEl.textContent = profile.title;
+  
+  const bioEl = document.querySelector('#hero .bio');
+  if (bioEl) bioEl.textContent = profile.bio;
+  
+  const avatarEl = document.querySelector('#hero .avatar');
+  if (avatarEl) avatarEl.setAttribute('src', profile.avatarUrl);
+  
+  // Render tech badges from top skills
+  renderTechBadges();
+  
+  // Update contact info (multiple locations: all .contact-email, etc.)
+  document.querySelectorAll('.contact-email').forEach(el => {
+    el.textContent = profile.email;
+    if (el.tagName === 'A') el.href = `mailto:${profile.email}`;
+  });
+  
+  document.querySelectorAll('.contact-phone').forEach(el => {
+    el.textContent = profile.phone;
+    if (el.tagName === 'A') el.href = `tel:${profile.phone}`;
+  });
+  
+  document.querySelectorAll('.contact-location').forEach(el => {
+    el.textContent = profile.location;
+  });
   
   console.log('✅ Profile rendered');
 }
 
+function renderTechBadges() {
+  const badgesContainer = document.getElementById('tech-badges');
+  if (!badgesContainer || !AppState.skills || AppState.skills.length === 0) return;
+  
+  // Get top 5 skills by hours
+  const topSkills = [...AppState.skills]
+    .sort((a, b) => b.hours - a.hours)
+    .slice(0, 5);
+  
+  badgesContainer.innerHTML = topSkills.map(skill => `
+    <span class="tech-badge">${skill.name}</span>
+  `).join('');
+}
+
 function renderSkills() {
   const skills = AppState.skills;
-  if (!skills || skills.length === 0) return;
+  console.log('🎨 renderSkills called with:', skills);
+  
+  if (!skills || skills.length === 0) {
+    console.warn('⚠️ No skills to render');
+    return;
+  }
 
   // Group skills by category
   const groupedSkills = skills.reduce((acc, skill) => {
@@ -121,8 +171,15 @@ function renderSkills() {
     return acc;
   }, {});
 
+  console.log('📦 Grouped skills:', groupedSkills);
+
   const skillsContainer = document.querySelector('#skills .skills-container');
-  if (!skillsContainer) return;
+  console.log('📍 Skills container:', skillsContainer);
+  
+  if (!skillsContainer) {
+    console.error('❌ Skills container not found!');
+    return;
+  }
 
   skillsContainer.innerHTML = '';
 
@@ -134,9 +191,8 @@ function renderSkills() {
         <div class="skill-grid">
           ${categorySkills.map(skill => `
             <div class="skill-card hover-lift">
-              <img src="${skill.iconUrl}" alt="${skill.name}" class="skill-icon">
+              <img src="${skill.iconUrl}" alt="${skill.name}" class="skill-icon" onerror="this.style.display='none'">
               <h4>${skill.name}</h4>
-              <p>${skill.hours}h</p>
             </div>
           `).join('')}
         </div>
@@ -150,14 +206,24 @@ function renderSkills() {
 
 function renderProjects() {
   const projects = AppState.projects;
-  if (!projects || projects.length === 0) return;
+  console.log('🎨 renderProjects called with:', projects);
+  
+  if (!projects || projects.length === 0) {
+    console.warn('⚠️ No projects to render');
+    return;
+  }
 
   const projectsContainer = document.querySelector('#projects .projects-grid');
-  if (!projectsContainer) return;
+  console.log('📍 Projects container:', projectsContainer);
+  
+  if (!projectsContainer) {
+    console.error('❌ Projects container not found!');
+    return;
+  }
 
   projectsContainer.innerHTML = projects.map(project => `
     <div class="project-card hover-lift">
-      <img src="${project.thumbnailUrl}" alt="${project.title}" class="project-image">
+      <img src="${project.thumbnailUrl}" alt="${project.title}" class="project-image" onerror="this.style.display='none'">
       <div class="project-content">
         <h3>${project.title}</h3>
         <p class="project-role">${project.role}</p>
@@ -169,7 +235,7 @@ function renderProjects() {
         </div>
         <div class="project-links">
           ${project.demoUrl ? `<a href="${project.demoUrl}" target="_blank" class="btn btn-primary">View Demo</a>` : ''}
-          ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="btn btn-outline">GitHub</a>` : ''}
+          ${project.gitHubUrl ? `<a href="${project.gitHubUrl}" target="_blank" class="btn btn-outline">GitHub</a>` : ''}
         </div>
       </div>
     </div>
@@ -182,14 +248,23 @@ function renderSocialLinks() {
   const socialLinks = AppState.socialLinks;
   if (!socialLinks || socialLinks.length === 0) return;
 
-  const socialContainer = document.querySelector('.social-links');
-  if (!socialContainer) return;
-
-  socialContainer.innerHTML = socialLinks.map(link => `
-    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="social-link">
+  const socialHTML = socialLinks.map(link => `
+    <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="social-link" title="${link.platform}">
       <i class="${link.iconClass}"></i>
     </a>
   `).join('');
+
+  // Render to hero section
+  const heroSocialContainer = document.querySelector('.social-links-hero');
+  if (heroSocialContainer) {
+    heroSocialContainer.innerHTML = socialHTML;
+  }
+
+  // Render to footer
+  const footerSocialContainer = document.querySelector('.footer-social');
+  if (footerSocialContainer) {
+    footerSocialContainer.innerHTML = socialHTML;
+  }
 
   console.log('✅ Social links rendered');
 }
@@ -284,12 +359,21 @@ async function handleContactFormSubmit(event) {
 // ===========================
 function showLoadingState() {
   AppState.isLoading = true;
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+  }
   document.body.classList.add('loading');
 }
 
 function hideLoadingState() {
   AppState.isLoading = false;
+  const overlay = document.getElementById('loading-overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
   document.body.classList.remove('loading');
+  console.log('✅ Loading overlay hidden');
 }
 
 function showErrorMessage(message) {

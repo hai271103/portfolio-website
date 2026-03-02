@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    .error {
+      background: #fee;
+      color: #c00;
+    }
+    .success {
+      background: #efe;
+      color: #060;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 API Test - Portfolio Backend</h1>
+  
+  <div>
+    <button onclick="testProfile()">Test Profile</button>
+    <button onclick="testSkills()">Test Skills</button>
+    <button onclick="testProjects()">Test Projects</button>
+    <button onclick="testSocialLinks()">Test Social Links</button>
+  </div>
+  
+  <div id="result" class="result">
+    Click a button to test API endpoints...
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5099/api';
+    const resultDiv = document.getElementById('result');
+
+    async function testAPI(endpoint, name) {
+      resultDiv.textContent = `⏳ Testing ${name}...\n`;
+      resultDiv.className = 'result';
+
+      try {
+        const startTime = Date.now();
+        const response = await fetch(`${API_BASE_URL}${endpoint}`);
+        const endTime = Date.now();
+        
+        console.log(`${name} Response:`, response);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        const duration = endTime - startTime;
+        
+        resultDiv.className = 'result success';
+        resultDiv.textContent = 
+          `✅ ${name} - SUCCESS!\n\n` +
+          `Duration: ${duration}ms\n` +
+          `Status: ${response.status} ${response.statusText}\n` +
+          `Data Count: ${Array.isArray(data) ? data.length : 1} items\n\n` +
+          `Response:\n${JSON.stringify(data, null, 2)}`;
+        
+        console.log(`${name} Data:`, data);
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = 
+          `❌ ${name} - FAILED!\n\n` +
+          `Error: ${error.message}\n\n` +
+          `Full error:\n${error.stack || error}`;
+        
+        console.error(`${name} Error:`, error);
+      }
+    }
+
+    function testProfile() {
+      testAPI('/profile', 'Profile API');
+    }
+
+    function testSkills() {
+      testAPI('/skills', 'Skills API');
+    }
+
+    function testProjects() {
+      testAPI('/projects', 'Projects API');
+    }
+
+    function testSocialLinks() {
+      testAPI('/sociallinks/active', 'Social Links API');
+    }
+  </script>
+</body>
+</html>
